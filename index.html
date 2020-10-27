@@ -9,10 +9,10 @@
 
     <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
 
     <script src="https://rawgithub.com/ismyrnow/Leaflet.groupedlayercontrol/master/src/leaflet.groupedlayercontrol.js"></script>
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <script type="text/javascript" src="./data/countries5.js"></script>
@@ -60,7 +60,9 @@
             };
         }
 
-        L.geoJson(countriesData, { style: style }).addTo(map);
+        //const temp = L.geoJson(countriesData, { style: style });
+        //    //.addTo(map);
+        //console.log(temp)
 
         function highlightFeature(e) {
             var layer = e.target;
@@ -101,7 +103,8 @@
         geojson = L.geoJson(countriesData, {
             style: style,
             onEachFeature: onEachFeature
-        }).addTo(map);
+        });
+            //.addTo(map);
 
         var legend = L.control({ position: 'bottomleft' });
 
@@ -209,6 +212,7 @@
                                             <b>Country: </b> ${item.country}<br/>
                                             <b>Location: </b> ${item['loc name']}<br/>
                                             <b>Point Type: </b> ${item['loc type']}<br/>
+                                            <b>Coordinates: </b> ${item['lat']},${item['lon']}<br/>
                                             <b>Status: </b> ${item['op_status']}
                                         </span>
                                     </div>
@@ -269,12 +273,32 @@
                     "Sea Ports": seaMarkers,
                     "Land Borders": landMarkers
                 }
+                ,
+                "COVID": {
+                    'covid-19': geojson
+                }
             }
 
             //L.control.layers(groupedOverlays).addTo(map);
-            L.control.groupedLayers("", groupedOverlays).addTo(map);
+            var gl = L.control.groupedLayers("", groupedOverlays).addTo(map);
+            //console.log(gl._domGroups[1]).find('input:checkbox:first'))
+            //$(gl._domGroups[1]).find('input:checkbox:first').onclick(function () {
+            //    console.log('clickiked')
+            //});
+            //console.log(gl._domGroups[1].querySelectorAll('checkbox'));
+            //console.log(gl._domGroups[1])
+            //console.log(gl)
+            //console.log(gl._layers[3])
+
+            //gl.onclick = function (event) {
+            //    console.log(2)
+            //}
 
 
+        }
+
+        document.onclick = function (event) {
+            console.log(1)
         }
 
         map.on('zoomend', function () {
